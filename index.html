@@ -13,19 +13,14 @@
       }
       button {
         outline: none;
+        border: none;
       }
-      #first-target {
-        width: 300px;
-        height: 150px;
-        background: rgb(230, 122, 122);
+      button.close-button {
+        width: 100%;
+        background: none;
+        text-decoration: underline;
       }
-      .target {
-        opacity: 0;
-      }
-      #test-button2 {
-        position: absolute;
-        top: 200px;
-        left: 50px;
+      button.circle {
         display: block;
         width: 40px;
         height: 40px;
@@ -33,12 +28,25 @@
         border-radius: 50%;
         padding: 5px;
       }
-      #target-2 {
+      #first-target {
+        width: 300px;
+        height: 150px;
+        background: var(--color);
+      }
+      .target {
+        opacity: 0;
+      }
+      #second-target {
         position: absolute;
-        top: 50%;
+        top: 200px;
         width: 100%;
         height: 150px;
-        background: rgb(101, 122, 179);
+        background: rgb(230, 122, 122);
+      }
+      #left-circle-button {
+        position: absolute;
+        top: 200px;
+        left: 50px;
       }
     </style>
     <header>
@@ -47,31 +55,44 @@
       <a href="https://github.com/TimoBechtel/morfy">Github</a>
     </header>
     <section>
-      <button id="morhp-button">Don't click.</button>
+      <button data-morph="first-target">Don't click.</button>
     </section>
     <section>
       <div id="first-target" class="target">
         <h2 style="text-align: center; color: white;">Hi</h2>
+        <button class="close-button" data-morph-close>
+          Close
+        </button>
       </div>
     </section>
-    <button id="test-button2">Test</button>
-    <div id="target-2" class="target">
+    <button id="left-circle-button" class="circle" data-morph="second-target">
+      Test
+    </button>
+    <div id="second-target" class="target">
       <h2 style="text-align: center; color: white;">This is another target</h2>
+      <button class="close-button" data-morph-close>
+        Close
+      </button>
     </div>
     <script type="module">
-      import { morph } from './dist/index.module.js';
+      import { createMorphable } from './dist/index.module.js';
+
+      const timings = ['cubic-bezier(0.68, -0.55, 0.265, 1.55)'];
+
       window.addEventListener('load', () => {
-        const button = document.getElementById('morhp-button');
-        const target = document.getElementById('first-target');
-        button.addEventListener('click', () => {
-          morph(button, target, {
-            timingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        document.querySelectorAll('[data-morph]').forEach((element, i) => {
+          const target = document.getElementById(element.dataset.morph);
+          const morphable = createMorphable(element, target, {
+            timingFunction: timings.length > i ? timings[i] : '',
           });
-        });
-        const button2 = document.getElementById('test-button2');
-        const target2 = document.getElementById('target-2');
-        button2.addEventListener('click', () => {
-          morph(button2, target2);
+          element.addEventListener('click', () => {
+            morphable.morph();
+          });
+          target
+            .querySelector('[data-morph-close]')
+            .addEventListener('click', () => {
+              morphable.revert();
+            });
         });
       });
     </script>
