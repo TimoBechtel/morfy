@@ -1,0 +1,46 @@
+{
+  "name": "morfy",
+  "version": "0.0.1",
+  "description": "Morph one element into another using css transforms.",
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "build": "microbundle && npm run build:example",
+    "build:example": "microbundle build -f es -o example/dist/index.js",
+    "dev": "microbundle watch",
+    "dev:example": "microbundle watch -f es -o example/dist/index.js",
+    "prepare": "npm run build",
+    "lint": "eslint src",
+    "test": "npm run lint"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimoBechtel/morfy.git"
+  },
+  "keywords": [
+    "morph",
+    "animate",
+    "css",
+    "javascript"
+  ],
+  "author": "Timo Bechtel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TimoBechtel/morfy/issues"
+  },
+  "homepage": "https://github.com/TimoBechtel/morfy#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "eslint": "^6.8.0",
+    "microbundle": "^0.12.0-next.8",
+    "semantic-release": "^17.0.4"
+  }
+}
