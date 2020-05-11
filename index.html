@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+    <title>morfy</title>
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      button {
+        outline: none;
+      }
+      #first-target {
+        width: 300px;
+        height: 150px;
+        background: rgb(230, 122, 122);
+      }
+      .target {
+        opacity: 0;
+      }
+      #test-button2 {
+        position: absolute;
+        top: 200px;
+        left: 50px;
+        display: block;
+        width: 40px;
+        height: 40px;
+        font-size: 0.8em;
+        border-radius: 50%;
+        padding: 5px;
+      }
+      #target-2 {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        height: 150px;
+        background: rgb(101, 122, 179);
+      }
+    </style>
+    <header>
+      <h1>morfy</h1>
+      <p>Morph anything</p>
+      <a href="https://github.com/TimoBechtel/morfy">Github</a>
+    </header>
+    <section>
+      <button id="morhp-button">Don't click.</button>
+    </section>
+    <section>
+      <div id="first-target" class="target">
+        <h2 style="text-align: center; color: white;">Hi</h2>
+      </div>
+    </section>
+    <button id="test-button2">Test</button>
+    <div id="target-2" class="target">
+      <h2 style="text-align: center; color: white;">This is another target</h2>
+    </div>
+    <script type="module">
+      import { morph } from './dist/index.module.js';
+      window.addEventListener('load', () => {
+        const button = document.getElementById('morhp-button');
+        const target = document.getElementById('first-target');
+        button.addEventListener('click', () => {
+          morph(button, target, {
+            timingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+          });
+        });
+        const button2 = document.getElementById('test-button2');
+        const target2 = document.getElementById('target-2');
+        button2.addEventListener('click', () => {
+          morph(button2, target2);
+        });
+      });
+    </script>
+  </body>
+</html>
