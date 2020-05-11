@@ -7,39 +7,91 @@ const calcTransformation = (source, target) => {
   };
 };
 
-export const morph = (
+const getEffectedStyles = (element, properties) => {
+  const computedStyle = window.getComputedStyle(element);
+  return properties.reduce((styles, prop) => {
+    styles[prop] = computedStyle[prop];
+    return styles;
+  }, {});
+};
+
+export const createMorphable = (
   source,
   target,
   {
     duration = 1,
     timingFunction = '',
-    effectedCssProperties = ['background', 'border', 'border-radius'],
+    effectedCssProperties = ['background-color', 'border-radius', 'border'],
   } = {}
 ) => {
+  const targetStyles = getEffectedStyles(target, effectedCssProperties);
+  const sourceStyles = getEffectedStyles(source, effectedCssProperties);
+  const transformation = calcTransformation(source, target);
+
   source.innerHTML = `<div>${source.innerHTML}</div>`;
   const contentWrapper = source.children[0];
 
-  const transformation = calcTransformation(source, target);
-  const targetStyles = window.getComputedStyle(target);
-
   source.style.transformOrigin = 'top left';
-  source.style.transition = `${['transform', ...effectedCssProperties].join(
-    ` ${duration}s ${timingFunction},`
-  )}, opacity ${duration}s ${duration * 1.5}s`;
+  target.style.visibility = 'hidden';
 
-  source.style.transform = `translate(${-transformation.x}px, ${-transformation.y}px) scale(${
-    transformation.scaleX
-  }, ${transformation.scaleY})`;
-  source.style.opacity = '0';
-  effectedCssProperties.forEach(
-    (prop) => (source.style[prop] = targetStyles[prop])
-  );
+  return {
+    morph() {
+      source.style.transition = `${['transform', ...effectedCssProperties].join(
+        ` ${duration}s ${timingFunction},`
+      )}, opacity ${duration}s ${duration * 1.5}s, visibility 0s ${
+        duration * 1.5 + duration
+      }s`;
 
-  contentWrapper.style.transition = `opacity ${
-    duration * 0.5
-  }s ${timingFunction}`;
-  contentWrapper.style.opacity = '0';
+      contentWrapper.style.transition = `opacity ${
+        duration * 0.5
+      }s ${timingFunction}`;
 
-  target.style.transition = `opacity ${duration}s ${duration}s`;
-  target.style.opacity = '1';
+      target.style.transition = `opacity ${duration}s ${duration}s, visibility 0s ${duration}s`;
+
+      source.style.transform = `translate(${-transformation.x}px, ${-transformation.y}px) scale(${
+        transformation.scaleX
+      }, ${transformation.scaleY})`;
+      source.style.opacity = '0';
+      source.style.visibility = 'hidden';
+
+      effectedCssProperties.forEach(
+        (prop) => (source.style[prop] = targetStyles[prop])
+      );
+
+      contentWrapper.style.opacity = '0';
+
+      target.style.opacity = '1';
+      target.style.visibility = 'visible';
+    },
+    revert() {
+      source.style.transition = `${['transform', ...effectedCssProperties].join(
+        ` ${duration}s ${duration * 0.2}s ${timingFunction},`
+      )}, opacity 0s, visibility 0s`;
+
+      contentWrapper.style.transition = `opacity ${duration}s ${
+        duration * 0.5
+      }s ${timingFunction}`;
+
+      target.style.transition = `opacity ${duration * 0.2}s, visibility 0s ${
+        duration * 0.2
+      }s`;
+
+      source.style.transform = `translate(0px, 0px) scale(1, 1)`;
+      source.style.opacity = '1';
+      source.style.visibility = 'visible';
+
+      effectedCssProperties.forEach(
+        (prop) => (source.style[prop] = sourceStyles[prop])
+      );
+
+      contentWrapper.style.opacity = '1';
+
+      target.style.opacity = '0';
+      target.style.visibility = 'hidden';
+    },
+  };
+};
+
+export const morph = (source, target, options) => {
+  createMorphable(source, target, options).morph();
 };

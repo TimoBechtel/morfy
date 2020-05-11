@@ -42,29 +42,32 @@ npm install morfy
 ### As module:
 
 ```javascript
-import { morph } from 'morfy';
+import { createMorphable } from 'morfy';
 ```
 
 Then:
 
 ```javascript
 const button = document.getElementById('test-button');
-const target = document.getElementById('target');
+const modal = document.getElementById('modal');
+const closeButton = document.getElementById('modal-close-button');
+
+const morphable = createMorphable(button, modal, {
+  timingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+});
+
 button.addEventListener('click', () => {
-  morph(button, target, {
-    timingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-  });
+  morphable.morph();
+});
+
+closeButton.addEventListener('click', () => {
+  morphable.revert();
 });
 ```
 
 Docs:
 
 ```typescript
-/**
- * Morph things
- */
-function morph(source: HTMLElement, target: HTMLElement, options: MorfyOptions);
-
 interface MorfyOptions {
   /**
    * duration in seconds
@@ -76,10 +79,39 @@ interface MorfyOptions {
    */
   timingFunction: string;
   /**
-   * css properties to copy over to target
+   * css properties to be transitioned from source to target
    */
   effectedCssProperties: string[];
 }
+
+interface Morphable {
+  /**
+   * start morphing
+   */
+  morph: () => void;
+  /**
+   * morph to initial state
+   */
+  revert: () => void;
+}
+
+/**
+ * Creates and initializes morphable object
+ */
+function createMorphable(
+  source: HTMLElement,
+  target: HTMLElement,
+  options: MorfyOptions
+): Morphable;
+
+/**
+ * Directly morph things
+ */
+function morph(
+  source: HTMLElement,
+  target: HTMLElement,
+  options: MorfyOptions
+): void;
 ```
 
 ## Run tests

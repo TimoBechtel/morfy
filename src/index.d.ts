@@ -11,16 +11,36 @@ interface MorfyOptions {
    */
   timingFunction: string;
   /**
-   * css properties to copy over to target
+   * css properties to be transitioned from source to target
    */
   effectedCssProperties: string[];
 }
 
+interface Morphable {
+  /**
+   * start morphing
+   */
+  morph: () => void;
+  /**
+   * morph to initial state
+   */
+  revert: () => void;
+}
+
 /**
- * Morph things
+ * Creates and initializes morphable object
+ */
+export function createMorphable(
+  source: HTMLElement,
+  target: HTMLElement,
+  options: MorfyOptions
+): Morphable;
+
+/**
+ * Directly morph things
  */
 export function morph(
   source: HTMLElement,
   target: HTMLElement,
   options: MorfyOptions
-);
+): void;
