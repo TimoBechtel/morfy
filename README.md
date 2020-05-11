@@ -22,12 +22,17 @@
 
 ## Table of Contents
 
+- [About](#About)
 - [Installation](#Install)
 - [Usage](#usage)
 - [Test](#run-tests)
 - [Contact](#contact)
 - [Contributing](#Contributing)
 - [License](#license)
+
+## About
+
+Morfy allows you to morph one HTML Element into another. It uses CSS transforms, so it's really fast and animations are cancelable. It is also toggleable (funny word, huh?). You can use it for example to morph a button into a modal.
 
 ## Install
 
