@@ -4,7 +4,7 @@
   <a href="https://www.npmjs.com/package/morfy" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/morfy.svg">
   </a>
-  <a href="https://github.com/TimoBechtel/morfy/blob/master/LICENSE" target="_blank">
+  <a href="https://github.com/TimoBechtel/morfy/blob/main/LICENSE" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/github/license/TimoBechtel/morfy" />
   </a>
 </p>
@@ -155,7 +155,7 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Distributed under the [MIT](https://github.com/TimoBechtel/morfy/blob/master/LICENSE) License.
+Distributed under the [MIT](https://github.com/TimoBechtel/morfy/blob/main/LICENSE) License.
 
 ---
 
