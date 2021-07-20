@@ -88,7 +88,7 @@ interface MorfyOptions {
    * css properties to be transitioned from source to target
    * provides autocompletion when using typescript
    */
-  effectedCssProperties: string[];
+  affectedCssProperties: string[];
 }
 
 interface Morphable {

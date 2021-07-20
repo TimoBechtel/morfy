@@ -13,7 +13,7 @@ function calcTransformation(source: HTMLElement, target: HTMLElement) {
   };
 }
 
-function getEffectedStyles(
+function getAffectedStyles(
   element: HTMLElement,
   properties: (keyof StyleProperties)[]
 ): StyleProperties {
@@ -30,11 +30,15 @@ export function createMorphable(
   {
     duration = 1,
     timingFunction = '',
-    effectedCssProperties = ['background-color', 'border-radius', 'border'],
+    effectedCssProperties,
+    affectedCssProperties = ['background-color', 'border-radius', 'border'],
   }: MorfyOptions = {}
 ): Morphable {
-  const targetStyles = getEffectedStyles(target, effectedCssProperties);
-  const sourceStyles = getEffectedStyles(source, effectedCssProperties);
+  // effectedCssProperties is deprecated, fallback to provide backwards compatibility
+  if (effectedCssProperties) affectedCssProperties = effectedCssProperties;
+
+  const targetStyles = getAffectedStyles(target, affectedCssProperties);
+  const sourceStyles = getAffectedStyles(source, affectedCssProperties);
   const transformation = calcTransformation(source, target);
 
   source.innerHTML = `<div>${source.innerHTML}</div>`;
@@ -45,7 +49,7 @@ export function createMorphable(
 
   return {
     morph() {
-      source.style.transition = `${['transform', ...effectedCssProperties].join(
+      source.style.transition = `${['transform', ...affectedCssProperties].join(
         ` ${duration}s ${timingFunction},`
       )}, opacity ${duration}s ${duration * 1.5}s, visibility 0s ${
         duration * 1.5 + duration
@@ -63,7 +67,7 @@ export function createMorphable(
       source.style.opacity = '0';
       source.style.visibility = 'hidden';
 
-      effectedCssProperties.forEach(
+      affectedCssProperties.forEach(
         (prop) =>
           targetStyles[prop] !== undefined &&
           source.style.setProperty(prop, targetStyles[prop] as string)
@@ -75,7 +79,7 @@ export function createMorphable(
       target.style.visibility = 'visible';
     },
     revert() {
-      source.style.transition = `${['transform', ...effectedCssProperties].join(
+      source.style.transition = `${['transform', ...affectedCssProperties].join(
         ` ${duration}s ${duration * 0.2}s ${timingFunction},`
       )}, opacity 0s, visibility 0s`;
 
@@ -91,7 +95,7 @@ export function createMorphable(
       source.style.opacity = '1';
       source.style.visibility = 'visible';
 
-      effectedCssProperties.forEach(
+      affectedCssProperties.forEach(
         (prop) =>
           sourceStyles[prop] !== undefined &&
           source.style.setProperty(prop, sourceStyles[prop] as string)
@@ -124,9 +128,14 @@ interface MorfyOptions {
    */
   timingFunction?: PropertiesHyphen['transition-timing-function'];
   /**
-   * css properties to be transitioned from source to target
+   * @deprecated Will be removed in next major release. Use affectedCssProperties instead.
    */
   effectedCssProperties?: (keyof StyleProperties)[];
+
+  /**
+   * css properties to be transitioned from source to target
+   */
+  affectedCssProperties?: (keyof StyleProperties)[];
 }
 
 interface Morphable {
