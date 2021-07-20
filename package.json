@@ -1,6 +1,6 @@
 {
   "name": "morfy",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Morph one element into another using css transforms.",
   "source": "src/index.ts",
   "main": "dist/index.js",
