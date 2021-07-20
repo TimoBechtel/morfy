@@ -2,19 +2,17 @@
   "name": "morfy",
   "version": "0.1.0",
   "description": "Morph one element into another using css transforms.",
-  "source": "src/index.js",
+  "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
   "unpkg": "dist/index.umd.js",
-  "types": "src/index.d.ts",
   "scripts": {
     "build": "microbundle --no-sourcemap && npm run build:example",
     "build:example": "microbundle build --no-sourcemap -f es -o example/dist/index.js",
     "dev": "microbundle watch",
     "dev:example": "microbundle watch -f es -o example/dist/index.js",
     "prepack": "npm run build",
-    "lint": "eslint src",
-    "test": "npm run lint"
+    "test": "echo no test specified; exit 0"
   },
   "files": [
     "dist",
@@ -39,8 +37,10 @@
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "eslint": "^7.31.0",
     "microbundle": "^0.13.3",
     "semantic-release": "^17.4.4"
+  },
+  "dependencies": {
+    "csstype": "^3.0.8"
   }
 }

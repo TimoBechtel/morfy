@@ -80,11 +80,13 @@ interface MorfyOptions {
   duration: number;
   /**
    * css timing function
+   * provides autocompletion when using typescript
    * @example 'ease-in'
    */
   timingFunction: string;
   /**
    * css properties to be transitioned from source to target
+   * provides autocompletion when using typescript
    */
   effectedCssProperties: string[];
 }
