@@ -18,8 +18,6 @@
   ·
 </p>
 
-**Warning** This is still in an early stage, please do not use it in production yet.
-
 ## Table of Contents
 
 - [About](#About)
